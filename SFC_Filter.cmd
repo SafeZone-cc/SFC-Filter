@@ -6,7 +6,7 @@ echo.
 echo                             Скрипт фильтрации лога SFC
 echo                                       от Alex Dragokas
 echo.
-echo.                                                v. 2.0
+echo.                                                v. 2.1
 echo.
 echo.
 
@@ -39,6 +39,7 @@ if "%~1" neq "" (
   ) else (
     set "CBS=%~1"
     set "clearCBS=%~dpn1_Clear%~x1"
+    set "clearCBS_Rights=%~dpn1_Permissions%~x1"
   )
 
 rem если запущен без аргумента, ищем лог рядом с батником
@@ -69,11 +70,13 @@ rem если запущен без аргумента, ищем лог рядом с батником
 
     set "CBS=%~dp0_CBS_Dragokas.log"
     set "clearCBS=%~dp0_CBS_Clear.log"
+    set "clearCBS_Rights=%~dp0_CBS_Permissions.log"
   )
 )
 
 :: Фильтрация
-< "%CBS%" find /i "[SR]" | findstr /IV /C:"[SR] Verify complete" /C:"[SR] Verifying 100" /C:"[SR] Beginning Verify and Repair transaction" > "%clearCBS%"
+< "%CBS%" findstr /i /C:"[SR]" /C:"Hashes for file member" /C:"  Found:" | findstr /IV /C:"[SR] Verify complete" /C:"[SR] Verifying 100" /C:"[SR] Beginning Verify and Repair transaction" /C:"[SR] Verifying 1 components" > "%clearCBS%"
+< "%CBS%" findstr /i /C:"[DIRSD OWNER WARNING]" /C:"ownership" > "%clearCBS_Rights%"
 
 :: Удаляем временный файл
 if exist "%~dp0_CBS_Dragokas.log" del /f /a "%~dp0_CBS_Dragokas.log"
