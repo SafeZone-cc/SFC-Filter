@@ -6,7 +6,7 @@ echo.
 echo                             Скрипт фильтрации лога SFC
 echo                                       от Alex Dragokas
 echo.
-echo.                                                v. 2.1
+echo.                                                v. 2.3
 echo.
 echo.
 
@@ -76,7 +76,7 @@ rem если запущен без аргумента, ищем лог рядом с батником
 
 :: Фильтрация
 < "%CBS%" findstr /i /C:"[SR]" /C:"Hashes for file member" /C:"  Found:" | findstr /IV /C:"[SR] Verify complete" /C:"[SR] Verifying 100" /C:"[SR] Beginning Verify and Repair transaction" /C:"[SR] Verifying 1 components" > "%clearCBS%"
-< "%CBS%" findstr /i /C:"[DIRSD OWNER WARNING]" /C:"ownership" > "%clearCBS_Rights%"
+< "%CBS%" findstr /i /C:"[DIRSD OWNER WARNING]" /C:"ownership" | findstr /IV /C:"Ignoring duplicate ownership" > "%clearCBS_Rights%"
 
 :: Удаляем временный файл
 if exist "%~dp0_CBS_Dragokas.log" del /f /a "%~dp0_CBS_Dragokas.log"
