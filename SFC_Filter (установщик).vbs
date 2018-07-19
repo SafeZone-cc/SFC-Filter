@@ -44,6 +44,8 @@ if not oFSO.FolderExists(InstFolder) then oFSO.CreateFolder InstFolder
 oFSO.CopyFile curPath & "\SFC_Filter.cmd", InstFolder & "\", true
 oFSO.CopyFile curPath & "\Icon.ico", InstFolder & "\", true
 
+oShell.Run "cmd.exe /c ""<NUL set /p=>""" & InstFolder & "\SFC_Filter.cmd" & """:Zone.Identifier:$DATA""", 0, false
+
 '—оздание €рлыка в папке SendTo (контекстное меню)
 with oShell.CreateShortcut(AppLink)
 	.Description        = AppName
